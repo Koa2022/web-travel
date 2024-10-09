@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายละเอียดสถานที่</title>
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+        h1 {
+            color: #007bff;
+            font-size: 2.5rem;
+        }
+        p {
+            color: #555;
+            font-size: 1.2rem;
+        }
+        #detail-content {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        img {
+            max-width: 400px;
+            margin: 1rem 0;
+            border-radius: 10px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 400px;
+            width: 100%;
+        }
+        input, textarea {
+            margin-bottom: 1rem;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div id="detail-content">
+        <h1>รายละเอียด</h1>
+        <img id="detail-image" src="" alt="Image">
+        <p id="detail-description">กำลังโหลดข้อมูล...</p>
+        <button class="delete-btn" onclick="deleteData()">ลบข้อมูลนี้</button>
+    </div>
+
+    <!-- ฟอร์มสำหรับเพิ่มหรือแก้ไขข้อมูล -->
+    <form id="edit-form">
+        <input type="text" id="new-title" placeholder="ชื่อใหม่">
+        <input type="text" id="new-image" placeholder="URL รูปภาพใหม่">
+        <textarea id="new-description" placeholder="รายละเอียดใหม่"></textarea>
+        <button type="button" onclick="updateData()">อัปเดตข้อมูล</button>
+    </form>
+
+    <script>
+        // ฟังก์ชันเพื่อดึงค่าจาก URL
+        function getParameterByName(name) {
+            const url = new URL(window.location.href);
+            return url.searchParams.get(name);
+        }
+
+        let detailContent = {
+            1: { title: "ปราสาทหินเขาพระวิหาร ผามออีแดง", image: "https://asianculturesmuseum.org/wp-content/uploads/2019/08/Preah-vihear-4.jpg", description: "โบราณสถานที่มีความงดงามและประวัติศาสตร์อันยาวนาน" },
+            2: { title: "วัดพระธาตุเรืองรอง", image: "https://theisaanrecord.co/wp-content/uploads/2019/08/mg_4142.jpg", description: "วัดที่มีเจดีย์สวยงาม เป็นสัญลักษณ์ของจังหวัดศรีสะเกษ" },
+            3: { title: "ลาบเป็ด", image: "https://www.pholfoodmafia.com/wp-content/uploads/2021/01/4Roasted-Duck-Larb.jpg", description: "อาหารท้องถิ่นอันมีชื่อเสียงของจังหวัดศรีสะเกษ" },
+            4: { title: "ตำลาว", image: "https://i.ytimg.com/vi/PqG-iLZkFyY/maxresdefault.jpg", description: "ส้มตำรสจัดจ้านที่เป็นที่นิยมในพื้นที่" },
+            5: { title: "สถานที่ท่องเที่ยวกางเต็นท์", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9KgbLeqBx5UgCKtvbFuDb3-ViFC170lD4kw&s", description: "ภูเชือกวิว" },
+            6: { title: "เทศกาลดอกลำดวนบาน", image: "https://mpics.mgronline.com/pics/Images/559000002697901.JPEG", description: "เทศกาลที่นิยมในฤดูดอกลำดวน" }
+        };
+
+        const id = getParameterByName('id');
+        const content = detailContent[id];
+
+        if (content) {
+            document.getElementById('detail-content').innerHTML = `
+                <h1>${content.title}</h1>
+                <img id="detail-image" src="${content.image}" alt="${content.title}">
+                <p id="detail-description">${content.description}</p>
+                <button class="delete-btn" onclick="deleteData()">ลบข้อมูลนี้</button>
+            `;
+            document.getElementById('new-title').value = content.title;
+            document.getElementById('new-image').value = content.image;
+            document.getElementById('new-description').value = content.description;
+        } else {
+            document.getElementById('detail-content').innerHTML = `<p>ไม่พบข้อมูล</p>`;
+        }
+
+        // ฟังก์ชันสำหรับลบข้อมูล
+        function deleteData() {
+            if (confirm('คุณแน่ใจหรือไม่ที่จะลบข้อมูลนี้?')) {
+                delete detailContent[id];
+                alert('ข้อมูลถูกลบแล้ว');
+                window.location.href = 'index.html'; // กลับไปที่หน้าแรก
+            }
+        }
+
+        // ฟังก์ชันสำหรับอัปเดตข้อมูล
+        function updateData() {
+            const newTitle = document.getElementById('new-title').value;
+            const newImage = document.getElementById('new-image').value;
+            const newDescription = document.getElementById('new-description').value;
+
+            if (newTitle && newImage && newDescription) {
+                detailContent[id].title = newTitle;
+                detailContent[id].image = newImage;
+                detailContent[id].description = newDescription;
+
+                // อัปเดตการแสดงผลบนหน้า
+                document.getElementById('detail-content').innerHTML = `
+                    <h1>${newTitle}</h1>
+                    <img id="detail-image" src="${newImage}" alt="${newTitle}">
+                    <p id="detail-description">${newDescription}</p>
+                    <button class="delete-btn" onclick="deleteData()">ลบข้อมูลนี้</button>
+                `;
+                alert('ข้อมูลอัปเดตเรียบร้อยแล้ว');
+            } else {
+                alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+            }
+        }
+    </script>
+</body>
+</html>

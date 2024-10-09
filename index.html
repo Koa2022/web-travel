@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>การท่องเที่ยวจังหวัดศรีสะเกษ</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap');
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background-image: linear-gradient(to right, #75bad5, #7fd4a0);
+            color: #263ede;
+            text-align: center;
+            padding: 3rem 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            font-size: 3rem;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            margin: 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        nav a {
+            color: #55abe1;
+            margin: 0 20px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #7fd4a0;
+        }
+
+        section {
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        section:nth-child(odd) {
+            background-color: #c8d8ef;
+        }
+
+        section:nth-child(even) {
+            background-color: #def3e8;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #263ede;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .places, .foods, .activities {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: white;
+            width: 300px;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
+            margin: 0 0 15px 0;
+            font-size: 1.5rem;
+            color: #007bff;
+        }
+
+        .card-content p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .card-content a, .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .card-content a:hover, .button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        #add-form {
+            margin-top: 2rem;
+            text-align: left;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #add-form input, #add-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        #add-form button {
+            background-color: #28a745;
+        }
+
+        #add-form button:hover {
+            background-color: #218838;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            margin-left: 10px;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>การท่องเที่ยวจังหวัดศรีสะเกษ</h1>
+    </header>
+
+    <nav>
+        <a href="#places">สถานที่ท่องเที่ยว</a>
+        <a href="#foods">อาหารท้องถิ่น</a>
+        <a href="#activities">กิจกรรมที่น่าสนใจ</a>
+    </nav>
+
+    <section id="places">
+        <h2>สถานที่ท่องเที่ยวแนะนำ</h2>
+        <div class="places" id="places-content"></div>
+    </section>
+
+    <section id="foods">
+        <h2>อาหารท้องถิ่นที่ต้องลอง</h2>
+        <div class="foods" id="foods-content"></div>
+    </section>
+
+    <section id="activities">
+        <h2>กิจกรรมที่น่าสนใจ</h2>
+        <div class="activities" id="activities-content"></div>
+    </section>
+
+    <section id="add-section">
+        <h2>เพิ่มข้อมูลใหม่</h2>
+        <div id="add-form">
+            <select id="new-category">
+                <option value="places">สถานที่ท่องเที่ยว</option>
+                <option value="foods">อาหารท้องถิ่น</option>
+                <option value="activities">กิจกรรมที่น่าสนใจ</option>
+            </select>
+            <input type="text" id="new-title" placeholder="ชื่อสถานที่/อาหาร/กิจกรรม">
+            <input type="text" id="new-image" placeholder="URL รูปภาพ">
+            <textarea id="new-description" placeholder="รายละเอียด"></textarea>
+            <button class="button" onclick="addNewItem()">เพิ่ม</button>
+        </div>
+    </section>
+
+    <script>
+        let data = {
+            places: [
+                { id: 1, title: "ปราสาทหินเขาพระวิหาร ผามออีแดง", image: "https://asianculturesmuseum.org/wp-content/uploads/2019/08/Preah-vihear-4.jpg", description: "โบราณสถานที่มีความงดงามและประวัติศาสตร์อันยาวนาน" },
+                { id: 2, title: "วัดพระธาตุเรืองรอง", image: "https://theisaanrecord.co/wp-content/uploads/2019/08/mg_4142.jpg", description: "วัดที่มีเจดีย์สวยงาม เป็นสัญลักษณ์ของจังหวัดศรีสะเกษ" }
+            ],
+            foods: [
+                { id: 3, title: "ลาบเป็ด", image: "https://www.pholfoodmafia.com/wp-content/uploads/2021/01/4Roasted-Duck-Larb.jpg", description: "อาหารท้องถิ่นอันมีชื่อเสียงของจังหวัดศรีสะเกษ" },
+                { id: 4, title: "ตำลาว", image: "https://i.ytimg.com/vi/PqG-iLZkFyY/maxresdefault.jpg", description: "ส้มตำรสจัดจ้านที่เป็นที่นิยมในพื้นที่" }
+            ],
+            activities: [
+                { id: 5, title: "สถานที่ท่องเที่ยวกางเต็นท์", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9KgbLeqBx5UgCKtvbFuDb3-ViFC170lD4kw&s", description: "ภูเชือกวิว" },
+                { id: 6, title: "เทศกาลดอกลำดวนบาน", image: "https://mpics.mgronline.com/pics/Images/559000002697901.JPEG", description: "เทศกาลที่นิยมในฤดูดอกลำดวน" }
+            ]
+        };
+
+        function renderCards() {
+            ['places', 'foods', 'activities'].forEach(category => {
+                const container = document.getElementById(`${category}-content`);
+                container.innerHTML = '';
+                data[category].forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <img src="${item.image}" alt="${item.title}">
+                        <div class="card-content">
+                            <h3>${item.title}</h3>
+                            <p>${item.description}</p>
+                            <a href="#" onclick="showDetail('${category}', ${item.id})">ดูรายละเอียด</a>
+                            <a href="#" class="delete-btn" onclick="deleteItem('${category}', ${item.id})">ลบ</a>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            });
+        }
+
+        function showDetail(category, id) {
+            // เปลี่ยนหน้าไปที่ detail.html และส่งพารามิเตอร์ ID ไปด้วย
+            window.location.href = `detail.html?id=${id}`;
+        }
+        
+        
+
+        function deleteItem(category, id) {
+            if (confirm('คุณแน่ใจหรือไม่ที่จะลบรายการนี้?')) {
+                data[category] = data[category].filter(item => item.id !== id);
+                renderCards();
+            }
+        }
+
+        function addNewItem() {
+            const category = document.getElementById('new-category').value;
+            const title = document.getElementById('new-title').value;
+            const image = document.getElementById('new-image').value;
+            const description = document.getElementById('new-description').value;
+
+            if (title && image && description) {
+                const newId = Math.max(...data[category].map(item => item.id)) + 1;
+                data[category].push({ id: newId, title, image, description });
+                renderCards();
+                document.getElementById('new-title').value = '';
+                document.getElementById('new-image').value = '';
+                document.getElementById('new-description').value = '';
+            } else {
+                alert('กรุณากรอกข้อมูลให้ครบทุกช่อง');
+            }
+        }
+
+        renderCards();
+    </script>
+</body>
+</html>
